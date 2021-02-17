@@ -1,5 +1,6 @@
 <img src="https://github.com/dwkuehne/ImageDatabase-Demonstration/blob/master/server.png" width="100px" height="100px" alt="Server Logo"> | <h1>Image Database Demonstration</h1>
 -------------------------|-----------------
+
 This project is to store an image as a binary file and to retrieve the image from the server and load it into a PictureBox control.  
 The program will allow the user to browse for an image file from their computer and store it on a MS SQL Server database. The use
 of this code is for use by students.
