@@ -26,6 +26,9 @@ namespace ImageDatabase
         // Storing credentials from frmLogin
         private string strUsername = String.Empty;
         private string strPassword = String.Empty;
+
+        //TODO: Replace String.Empty with the name of your table.
+        private string strTableName = String.Empty; // (i.e. "Images)
         
         public frmMain()
         {
@@ -37,7 +40,7 @@ namespace ImageDatabase
         /// and the byte array of the actual Image (Image column in SQL)
         /// 
         /// SQL Data
-        /// pictureID: int
+        /// pictureID: int (auto increment)
         /// Image: varbinary(MAX)
         /// 
         /// Each object will be stored in a list.
@@ -157,18 +160,13 @@ namespace ImageDatabase
                 
                 if (openFile.ShowDialog() == DialogResult.OK)
                 {
-                    string strExtension = Path.GetExtension(openFile.FileName);
-                    if (strExtension != ".png" || strExtension != ".jpg")
-                    {
-                        MessageBox.Show("Only image files supported.", "Incorrect File Type", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
+                    //TODO: Add some validation to make sure the file is an image.
 
                     byte[] image = File.ReadAllBytes(openFile.FileName); //Convert image into a byte array
                     try
                     {
                         cntDatabase.Open();
-                        string insertQuery = @"INSERT INTO Images(Image) VALUES(@Image)"; // @Image is a parameter we will fill in later
+                        string insertQuery = $"INSERT INTO {strTableName}(Image) VALUES(@Image)"; // @Image is a parameter we will fill in later
                         SqlCommand insertCmd = new SqlCommand(insertQuery, cntDatabase);
                         SqlParameter sqlParams = insertCmd.Parameters.AddWithValue("@Image", image); // The parameter will be the image as a byte array
                         sqlParams.DbType = System.Data.DbType.Binary; // The type of data we are sending to the server will be a binary file
@@ -222,7 +220,7 @@ namespace ImageDatabase
                     try
                     {
                         cntDatabase.Open();
-                        string deleteQuery = $"DELETE FROM Images WHERE pictureID={intSelectedImageID}";
+                        string deleteQuery = $"DELETE FROM {strTableName} WHERE pictureID={intSelectedImageID}";
                         SqlCommand deleteCmd = new SqlCommand(deleteQuery, cntDatabase);
                         deleteCmd.ExecuteNonQuery();
                         cntDatabase.Close();
@@ -317,8 +315,10 @@ namespace ImageDatabase
         /// </summary>
         public void LoginPrompt()
         {
-            frmLogin login = new frmLogin();
+            frmLogin login = new frmLogin();            
             login.ShowDialog();
+            //TODO: Change "IPaddressOfServer" to the fully qualified server name or IP address
+            //TODO: Change "databaseOnServer" to the server database name
             string CONNECT_STRING = $"Server=IPaddressOfServer;Database=databaseOnServer;User Id={login.tbxUsername.Text};password={login.tbxPassword.Text}";
             // Example String: $"Server=192.168.1.1;Database=MyAwesomeApp;User Id=dave; password=codemonkey"
             cntDatabase = new SqlConnection(CONNECT_STRING);
@@ -332,7 +332,8 @@ namespace ImageDatabase
         /// </summary>
         public void ReloadImageList()
         {
-            string strCommand = "SELECT pictureID, Image FROM Images;"; // Query to pull two columns of data from Images table
+            //TODO: Change the SELECT statement to the column names you are trying to use.
+            string strCommand = $"SELECT pictureID, Image FROM {strTableName};"; // Query to pull two columns of data from Images table
             SqlCommand SelectCommand = new SqlCommand(strCommand, cntDatabase);
             SqlDataReader sqlReader;
 
@@ -349,10 +350,10 @@ namespace ImageDatabase
                     image.Image = (byte[])sqlReader[1]; // MS SQL Datatype varbinary(MAX)
                     lstImages.Add(image); // Add image object to list
 
-                    //You can use a constructor for this class to accept two parameters
-                    //and add it all at the same time. Just for demo purposes
+                    // You can use a constructor for this class to accept two parameters
+                    // and add it all at the same time. Just for demo purposes
 
-                    //lstImages.Add(new Images(sqlReader.GetInt32(0), (byte[])sqlReader[1]));
+                    // lstImages.Add(new Images(sqlReader.GetInt32(0), (byte[])sqlReader[1]));
                 }                
                 cntDatabase.Close();
             }
