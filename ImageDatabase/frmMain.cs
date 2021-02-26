@@ -139,7 +139,7 @@ namespace ImageDatabase
         }
 
         /// <summary>
-        /// Clicking the "Add" button will open a file dialop prompt for the user. The 
+        /// Clicking the "Add" button will open a file dialog prompt for the user. The 
         /// user can browse for .png and .jpg files (with a little validation). The 
         /// selected file is converted into a byte array for storing in a varbinary(MAX)
         /// data type on a SQL Server. 
@@ -260,7 +260,7 @@ namespace ImageDatabase
         /// CheckConnection() is used to determine if the server can be reached. 
         /// Produce a Login page to obtain the credentials from the user. Update
         /// the boolean value to reflect if a connection was achieved. If there 
-        /// was a sucessful connection, query the server any images. Load the images
+        /// was a sucessful connection, query the server for any images. Load the images
         /// into a list with the ReloadImageList() method then load the first image
         /// in the list into the PictureBox control. 
         /// 
@@ -320,7 +320,7 @@ namespace ImageDatabase
             //TODO: Change "IPaddressOfServer" to the fully qualified server name or IP address
             //TODO: Change "databaseOnServer" to the server database name
             string CONNECT_STRING = $"Server=IPaddressOfServer;Database=databaseOnServer;User Id={login.tbxUsername.Text};password={login.tbxPassword.Text}";
-            // Example String: $"Server=192.168.1.1;Database=MyAwesomeApp;User Id=dave; password=codemonkey"
+            // Example String: $"Server=192.168.1.1;Database=MyAwesomeApp;User Id=dave;password=codemonkey"
             cntDatabase = new SqlConnection(CONNECT_STRING);
         }
 
