@@ -28,7 +28,7 @@ namespace ImageDatabase
         private string strPassword = String.Empty;
 
         //TODO: Replace String.Empty with the name of your table.
-        private string strTableName = String.Empty; // (i.e. "Images)
+        private string strTableName = String.Empty; // (e.g. "Images")
         
         public frmMain()
         {
