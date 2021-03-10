@@ -28,8 +28,8 @@ namespace ImageDatabase
         private string strPassword = String.Empty;
 
         //TODO: Replace String.Empty with the name of your table.
-        private string strTableName = String.Empty; // (e.g. "Images")
-        
+        private string strTableName = String.Empty; // (e.g. "Images")        
+
         public frmMain()
         {
             InitializeComponent();
@@ -166,7 +166,8 @@ namespace ImageDatabase
                     try
                     {
                         cntDatabase.Open();
-                        string insertQuery = $"INSERT INTO {strTableName}(Image) VALUES(@Image)"; // @Image is a parameter we will fill in later
+                        //TODO: Change (Image) to the name of your image column [e.g (ProductImages)]
+                        string insertQuery = $"INSERT INTO {strTableName}(Image) VALUES(@Image)"; // @Image is a parameter we will fill in later                        
                         SqlCommand insertCmd = new SqlCommand(insertQuery, cntDatabase);
                         SqlParameter sqlParams = insertCmd.Parameters.AddWithValue("@Image", image); // The parameter will be the image as a byte array
                         sqlParams.DbType = System.Data.DbType.Binary; // The type of data we are sending to the server will be a binary file
@@ -220,6 +221,7 @@ namespace ImageDatabase
                     try
                     {
                         cntDatabase.Open();
+                        //TODO: Change pictureID to the name of your Primary Key column
                         string deleteQuery = $"DELETE FROM {strTableName} WHERE pictureID={intSelectedImageID}";
                         SqlCommand deleteCmd = new SqlCommand(deleteQuery, cntDatabase);
                         deleteCmd.ExecuteNonQuery();
@@ -319,7 +321,7 @@ namespace ImageDatabase
             login.ShowDialog();
             //TODO: Change "IPaddressOfServer" to the fully qualified server name or IP address
             //TODO: Change "databaseOnServer" to the server database name
-            string CONNECT_STRING = $"Server=IPaddressOfServer;Database=databaseOnServer;User Id={login.tbxUsername.Text};password={login.tbxPassword.Text}";
+            string CONNECT_STRING = $"Server=IPaddressOfServer;Database=databaseOnServer;User Id={login.tbxUsername.Text};password={login.tbxPassword.Text}";            
             // Example String: $"Server=192.168.1.1;Database=MyAwesomeApp;User Id=dave;password=codemonkey"
             cntDatabase = new SqlConnection(CONNECT_STRING);
         }
@@ -333,7 +335,7 @@ namespace ImageDatabase
         public void ReloadImageList()
         {
             //TODO: Change the SELECT statement to the column names you are trying to use.
-            string strCommand = $"SELECT pictureID, Image FROM {strTableName};"; // Query to pull two columns of data from Images table
+            string strCommand = $"SELECT pictureID, Image FROM {strTableName};"; // Query to pull two columns of data from Images table            
             SqlCommand SelectCommand = new SqlCommand(strCommand, cntDatabase);
             SqlDataReader sqlReader;
 
